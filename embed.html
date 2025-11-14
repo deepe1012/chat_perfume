@@ -131,4 +131,111 @@
   // === 향수 데이터 ===
   const perfumes = [
     { id:1, name:"01 First Memory",  keywords:["상큼","시트러스","레몬","산뜻"], notes:["레몬","베르가못","시트러스"] },
-    { id:2, name:"02 Sweet Room",    keywords:["달콤","바닐라"]()
+    { id:2, name:"02 Sweet Room",    keywords:["달콤","바닐라","부드러운","포근"], notes:["바닐라","머스크","카라멜"] },
+    { id:3, name:"03 Rainy Day",     keywords:["시원","맑은","비누향","청량","깨끗"], notes:["비누","화이트머스크"] },
+    { id:4, name:"04 Wood Ground",   keywords:["우디","나무향","묵직","스모키","깊은"], notes:["샌달우드","시더","파출리"] },
+    { id:5, name:"05 Pink Mood",     keywords:["플로럴","꽃향","로맨틱","부드러움"], notes:["장미","자스민","피오니"] },
+    { id:6, name:"06 Fresh Day",     keywords:["과일향","상큼","달달","톡톡"], notes:["복숭아","베리","사과"] },
+    { id:7, name:"07 Deep Amber",    keywords:["엠버","묵직","따뜻함","섹시","농밀"], notes:["앰버","파출리"] },
+    { id:8, name:"08 Soft Clean",    keywords:["비누향","코튼","포근","깔끔","잔잔"], notes:["코튼","화이트머스크","린넨"] },
+    { id:9, name:"09 Night Walk",    keywords:["잔잔","고요","차분","은은"], notes:["아이리스","티","머스크"] },
+    { id:10,name:"10 Sunset Moment", keywords:["따뜻","노을","감성","편안"], notes:["오렌지","바닐라","머스크"] }
+  ];
+
+  const synonymGroups = {
+    "상큼": ["상큼","상쾌","산뜻","시트러스","레몬느낌"],
+    "달콤": ["달콤","달달","스윗","디저트향"],
+    "부드러움":["부드러움","부드러운","포근","소프트"],
+    "비누향":["비누","솝","샤워후향","비누향"],
+    "우디":["우디","나무","우드","스모키","묵직"],
+    "따뜻":["따뜻","웜","포근한따뜻","노을"],
+    "플로럴":["꽃","꽃향","플로럴","플로랄"],
+    "깨끗":["깨끗","클린","청량","깔끔"]
+  };
+
+  function cleanText(t) { return t.replace(/\s+/g,"").toLowerCase(); }
+
+  function matchSynonym(text, keyword) {
+    for (const key in synonymGroups) {
+      if (synonymGroups[key].includes(keyword)) {
+        if (synonymGroups[key].some(w => text.includes(w))) return true;
+      }
+    }
+    return false;
+  }
+
+  function getScores(userText) {
+    const text = cleanText(userText);
+
+    return perfumes.map(p => {
+      let score = 0;
+
+      p.keywords.forEach(k => {
+        if (text.includes(k)) score += 4;
+        if (matchSynonym(text, k)) score += 3;
+      });
+
+      p.notes.forEach(n => {
+        if (text.includes(n)) score += 3;
+        if (matchSynonym(text, n)) score += 2;
+      });
+
+      return { ...p, score };
+    }).sort((a,b) => b.score - a.score);
+  }
+
+  function recommend(text) {
+    const list = getScores(text);
+    if (list[0].score === 0)
+      return "조금 더 자세히 말해줘! (예: 상큼한 과일향, 포근한 비누향 등)";
+
+    const a = list[0];
+    const b = list[1];
+
+    let msg = `"${a.name}" 추천!\n`;
+    if (b && b.score > 0) msg += `"${b.name}"도 잘 맞을 것 같아.`;
+    return msg;
+  }
+
+  // === UI ===
+  const popup = document.getElementById("chat-popup");
+  const launcher = document.getElementById("chat-launcher");
+  const closeBtn = document.getElementById("chat-close");
+  const chat = document.getElementById("chat-window");
+  const input = document.getElementById("user-input");
+  const sendBtn = document.getElementById("send-btn");
+
+  launcher.onclick = () => popup.style.display = "flex";
+  closeBtn.onclick = () => popup.style.display = "none";
+
+  sendBtn.onclick = send;
+  input.addEventListener("keydown", e => { if (e.key === "Enter") send(); });
+
+  function send() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMsg(text, "user");
+    input.value = "";
+    const reply = recommend(text);
+    setTimeout(() => addMsg(reply, "bot"), 150);
+  }
+
+  function addMsg(text, who) {
+    const row = document.createElement("div");
+    row.classList.add("msg-row", who);
+
+    const bubble = document.createElement("div");
+    bubble.classList.add("msg-bubble", who);
+    bubble.textContent = text;
+
+    row.appendChild(bubble);
+    chat.appendChild(row);
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  addMsg("안녕! 원하는 향 느낌을 알려줘!", "bot");
+</script>
+
+</body>
+</html>
