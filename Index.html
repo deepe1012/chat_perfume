@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Perfume Chatbot Popup</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      background: #fff9fc;
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    /* 플로팅 아이콘 */
+    .chat-launcher {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      border: none;
+      background: #d76da4;
+      color: #fff;
+      font-size: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+      z-index: 9999;
+    }
+
+    /* 팝업 챗봇 박스 */
+    .chat-popup {
+      position: fixed;
+      bottom: 84px;
+      right: 20px;
+      width: 360px;
+      max-height: 560px;
+      background: #fff;
+      border-radius: 16px;
+      border: 2px solid #f4d0e4;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.2);
+      z-index: 9998;
+    }
+
+    .chat-header {
+      padding: 10px 14px;
+      background: #d76da4;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+
+    .chat-header-title {
+      font-weight: 600;
+    }
+
+    .chat-header-close {
+      border: none;
+      background: transparent;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .chat-window {
+      flex: 1;
+      padding: 12px;
+      overflow-y: auto;
+      background: #fffdfd;
+    }
+
+    .msg-row {
+      margin-bottom: 10px;
+      display: flex;
+    }
+
+    .msg-row.user {
+      justify-content: flex-end;
+    }
+
+    .msg-bubble {
+      padding: 10px 13px;
+      max-width: 80%;
+      border-radius: 12px;
+      white-space: pre-line;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .msg-bubble.user {
+      background: #ffddee;
+      border-bottom-right-radius: 2px;
+    }
+
+    .msg-bubble.bot {
+      background: #f7e8f3;
+      border-bottom-left-radius: 2px;
+    }
+
+    .input-area {
+      display: flex;
+      border-top: 1px solid #f0d5e5;
+      background: #fff;
+    }
+
+    .input-area input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .input-area button {
+      width: 80px;
+      border: none;
+      background: #d76da4;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 480px) {
+      .chat-popup {
+        right: 10px;
+        width: calc(100% - 20px);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- 플로팅 버튼 -->
+<button class="chat-launcher" id="chat-launcher">💬</button>
+
+<!-- 팝업 챗봇 -->
+<div class="chat-popup" id="chat-popup">
+  <div class="chat-header">
+    <span class="chat-header-title">향수 추천 챗봇</span>
+    <button class="chat-header-close" id="chat-close">&times;</button>
+  </div>
+
+  <div id="chat-window" class="chat-window"></div>
+
+  <div class="input-area">
+    <input id="user-input" placeholder="향 느낌을 적어주세요" />
+    <button id="send-btn">전송</button>
+  </div>
+</div>
+
+<script>
+  // 10개 향수 데이터
+  const perfumes = [
+    { id:1, name:"01 First Memory",  keywords:["상큼","시트러스","레몬","산뜻"], notes:["레몬","베르가못","시트러스"] },
+    { id:2, name:"02 Sweet Room",    keywords:["달콤","바닐라","부드러운","포근"], notes:["바닐라","머스크","카라멜"] },
+    { id:3, name:"03 Rainy Day",     keywords:["시원","맑은","비누향","청량","깨끗"], notes:["비누","화이트머스크"] },
+    { id:4, name:"04 Wood Ground",   keywords:["우디","나무향","묵직","스모키","깊은"], notes:["샌달우드","시더","파출리"] },
+    { id:5, name:"05 Pink Mood",     keywords:["플로럴","꽃향","로맨틱","부드러움"], notes:["장미","자스민","피오니"] },
+    { id:6, name:"06 Fresh Day",     keywords:["과일향","상큼","달달","톡톡"], notes:["복숭아","베리","사과"] },
+    { id:7, name:"07 Deep Amber",    keywords:["엠버","묵직","따뜻함","섹시","농밀"], notes:["앰버","파출리"] },
+    { id:8, name:"08 Soft Clean",    keywords:["비누향","코튼","포근","깔끔","잔잔"], notes:["코튼","화이트머스크","린넨"] },
+    { id:9, name:"09 Night Walk",    keywords:["잔잔","고요","차분","은은"], notes:["아이리스","티","머스크"] },
+    { id:10,name:"10 Sunset Moment", keywords:["따뜻","노을","감성","편안"], notes:["오렌지","바닐라","머스크"] }
+  ];
+
+  // 내가 묶어둔 유사어 그룹
+  const synonymGroups = {
+    "상큼":   ["상큼","상쾌","산뜻","시원한상큼","레몬느낌","시트러스"],
+    "달콤":   ["달콤","달달","스윗","디저트향"],
+    "부드러움":["부드러움","부드러운","포근","소프트"],
+    "비누향": ["비누","솝","비누향","샤워후향"],
+    "우디":   ["우디","나무","우드","스모키","묵직"],
+    "플로럴": ["꽃","플로랄","플로럴","꽃향","로맨틱"],
+    "따뜻":   ["따뜻","웜","노을","포근한따뜻"],
+    "깨끗":   ["깨끗","클린","청량","깔끔"]
+  };
+
+  function cleanText(t) {
+    return t.replace(/\s+/g, "").toLowerCase();
+  }
+
+  // 유사어 그룹 안에서 매칭되는지 체크
+  function matchSynonym(text, keyword) {
+    for (const key in synonymGroups) {
+      const group = synonymGroups[key];
+      if (group.includes(keyword)) {
+        if (group.some(g => text.includes(g))) return true;
+      }
+    }
+    return false;
+  }
+
+  // 추천 점수 계산
+  function getScores(userText) {
+    const text = cleanText(userText);
+
+    return perfumes.map(p => {
+      let score = 0;
+
+      // 키워드 직접 매칭 + 유사어 매칭
+      p.keywords.forEach(k => {
+        if (text.includes(k)) score += 4;
+        if (matchSynonym(text, k)) score += 3;
+      });
+
+      // 노트도 비슷하게 체크
+      p.notes.forEach(n => {
+        if (text.includes(n)) score += 3;
+        if (matchSynonym(text, n)) score += 2;
+      });
+
+      // 어근 기반 처리 (대충 느낌만 맞춰줌)
+      if (/부드|포근|스모키|상큼|깨끗/.test(text)) {
+        if (p.keywords.some(k => text.includes(k.slice(0,2)))) score += 2;
+      }
+
+      return { ...p, score };
+    }).sort((a,b) => b.score - a.score);
+  }
+
+  function recommend(text) {
+    const list = getScores(text);
+
+    if (!list.length || list[0].score === 0) {
+      return "조금만 더 구체적으로 말해줘! (예: 상큼한 과일향, 포근한 비누향, 우디하고 묵직한 향)";
+    }
+
+    const a = list[0];
+    const b = list[1];
+
+    let msg = `"${a.name}" 추천!\n`;
+    if (b && b.score > 0) msg += `"${b.name}"도 같이 테스트해보면 좋을 듯.`;
+    return msg;
+  }
+
+  // UI 관련
+  const chatPopup   = document.getElementById("chat-popup");
+  const launcher    = document.getElementById("chat-launcher");
+  const closeBtn    = document.getElementById("chat-close");
+  const chatWindow  = document.getElementById("chat-window");
+  const input       = document.getElementById("user-input");
+  const sendBtn     = document.getElementById("send-btn");
+
+  function toggleChat(open) {
+    if (open) {
+      chatPopup.style.display = "flex";
+    } else {
+      chatPopup.style.display = "none";
+    }
+  }
+
+  function addMsg(text, who) {
+    const row = document.createElement("div");
+    row.classList.add("msg-row", who);
+
+    const bubble = document.createElement("div");
+    bubble.classList.add("msg-bubble", who);
+    bubble.textContent = text;
+
+    row.appendChild(bubble);
+    chatWindow.appendChild(row);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
+
+  function send() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMsg(text, "user");
+    input.value = "";
+
+    const reply = recommend(text);
+    setTimeout(() => addMsg(reply, "bot"), 150);
+  }
+
+  // 이벤트
+  launcher.addEventListener("click", () => {
+    const isOpen = chatPopup.style.display === "flex";
+    toggleChat(!isOpen);
+  });
+
+  closeBtn.addEventListener("click", () => toggleChat(false));
+  sendBtn.addEventListener("click", send);
+  input.addEventListener("keydown", e => { if (e.key === "Enter") send(); });
+
+  // 처음 안내 한 줄
+  addMsg("안녕! 원하는 향 느낌을 편하게 적어줘.\n예) 상큼한 과일향 / 포근한 비누향 / 우디하고 묵직한 겨울 향", "bot");
+</script>
+
+</body>
+</html>
