@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Chatbot Embed</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      font-family: Pretendard, sans-serif;
+    }
+
+    /* 팝업 버튼 */
+    .chat-launcher {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      border: none;
+      background: #d76da4;
+      color: #fff;
+      font-size: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+      z-index: 9999;
+    }
+
+    /* 팝업 UI */
+    .chat-popup {
+      position: fixed;
+      bottom: 84px;
+      right: 20px;
+      width: 360px;
+      max-height: 560px;
+      background: #fff;
+      border-radius: 16px;
+      border: 2px solid #f4d0e4;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.2);
+      z-index: 9998;
+    }
+
+    .chat-header {
+      padding: 10px 14px;
+      background: #d76da4;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+
+    .chat-window {
+      flex: 1;
+      padding: 12px;
+      overflow-y: auto;
+      background: #fffdfd;
+    }
+
+    .msg-row {
+      margin-bottom: 10px;
+      display: flex;
+    }
+    .msg-row.user { justify-content: flex-end; }
+
+    .msg-bubble {
+      padding: 10px 13px;
+      max-width: 80%;
+      border-radius: 12px;
+      white-space: pre-line;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .msg-bubble.user { background: #ffddee; border-bottom-right-radius: 2px; }
+    .msg-bubble.bot  { background: #f7e8f3; border-bottom-left-radius: 2px; }
+
+    .input-area {
+      display: flex;
+      border-top: 1px solid #f0d5e5;
+      background: #fff;
+    }
+
+    .input-area input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .input-area button {
+      width: 80px;
+      border: none;
+      background: #d76da4;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<button class="chat-launcher" id="chat-launcher">💬</button>
+
+<div class="chat-popup" id="chat-popup">
+  <div class="chat-header">
+    <span>향수 추천 챗봇</span>
+    <button class="chat-header-close" id="chat-close" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;">×</button>
+  </div>
+
+  <div id="chat-window" class="chat-window"></div>
+
+  <div class="input-area">
+    <input id="user-input" placeholder="향 느낌을 적어주세요" />
+    <button id="send-btn">전송</button>
+  </div>
+</div>
+
+<script>
+  // === 향수 데이터 ===
+  const perfumes = [
+    { id:1, name:"01 First Memory",  keywords:["상큼","시트러스","레몬","산뜻"], notes:["레몬","베르가못","시트러스"] },
+    { id:2, name:"02 Sweet Room",    keywords:["달콤","바닐라"]()
