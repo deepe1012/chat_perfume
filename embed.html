@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>Nostalgia Perfume Chatbot Embed</title>
+  <title>Nostalgia Perfume Chatbot</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -11,7 +11,7 @@
       margin: 0;
       padding: 0;
       background: transparent;
-      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", system-ui, sans-serif;
     }
 
     /* 플로팅 버튼 */
@@ -19,8 +19,8 @@
       position: fixed;
       bottom: 20px;
       right: 20px;
-      width: 54px;
-      height: 54px;
+      width: 58px;
+      height: 58px;
       border-radius: 50%;
       border: none;
       background: #d76da4;
@@ -30,98 +30,89 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.18);
-      z-index: 9999;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.22);
+      z-index: 99999;
     }
 
     /* 팝업 전체 */
     .chat-popup {
       position: fixed;
-      bottom: 84px;
+      bottom: 88px;
       right: 20px;
       width: 360px;
-      max-height: 600px;
+      max-height: calc(100vh - 120px);
       background: #ffffff;
-      border-radius: 16px;
-      border: 2px solid #f4d0e4;
+      border-radius: 18px;
+      border: 1px solid #e6e6e6;
       display: none;
       flex-direction: column;
       overflow: hidden;
-      box-shadow: 0 10px 26px rgba(0,0,0,0.2);
-      z-index: 9998;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+      z-index: 99998;
     }
 
     .chat-header {
-      padding: 10px 14px 8px;
-      background: #d76da4;
-      color: #fff;
+      background: #ffffff;
+      padding: 12px 14px;
+      border-bottom: 1px solid #efefef;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      font-size: 14px;
+      align-items: center;
     }
 
     .chat-header-title {
       font-weight: 600;
+      font-size: 15px;
+      color: #333;
     }
 
     .chat-header-sub {
       font-size: 11px;
-      opacity: 0.85;
+      color: #999;
       margin-top: 2px;
     }
 
-    .chat-header-left {
-      display: flex;
-      flex-direction: column;
-    }
-
     .chat-header-close {
-      background:none;
-      border:none;
-      color:#fff;
-      font-size:18px;
-      cursor:pointer;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #666;
     }
 
     .chat-window {
       flex: 1;
-      padding: 10px 10px 4px;
+      padding: 10px 12px;
       overflow-y: auto;
-      background: #fffdfd;
-    }
-
-    .helper-text {
-      font-size: 11px;
-      color: #b37aa0;
-      margin: 0 4px 6px;
-      padding: 4px 6px;
-      border-radius: 6px;
-      background: #fff4fb;
+      background: #fafafa;
     }
 
     .msg-row {
       margin-bottom: 10px;
       display: flex;
     }
-    .msg-row.user { justify-content: flex-end; }
+
+    .msg-row.user {
+      justify-content: flex-end;
+    }
 
     .msg-bubble {
       padding: 10px 13px;
-      max-width: 80%;
-      border-radius: 12px;
-      white-space: pre-line;
+      max-width: 78%;
       font-size: 13px;
       line-height: 1.45;
+      border-radius: 14px;
+      white-space: pre-line;
+    }
+
+    .msg-bubble.bot {
+      background: #f2f2f2;
+      border-bottom-left-radius: 4px;
     }
 
     .msg-bubble.user {
-      background: #ffddee;
-      border-bottom-right-radius: 2px;
-    }
-    .msg-bubble.bot {
-      background: #f7e8f3;
-      border-bottom-left-radius: 2px;
+      background: #ffe5f4;
+      border-bottom-right-radius: 4px;
     }
 
     .msg-bubble.bot b {
@@ -129,35 +120,36 @@
     }
 
     .quick-menu {
-      padding: 6px 8px 4px;
-      border-top: 1px solid #f5d7e7;
-      border-bottom: 1px solid #f5d7e7;
-      background:#fffafc;
-      display:flex;
-      flex-wrap:wrap;
-      gap:4px;
+      background: #ffffff;
+      padding: 6px 6px;
+      border-top: 1px solid #ececec;
+      border-bottom: 1px solid #ececec;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
     }
 
     .quick-chip {
-      border:none;
-      border-radius:999px;
-      padding:4px 9px;
-      font-size:11px;
-      background:#f3e0ee;
-      color:#7c4e67;
-      cursor:pointer;
-      white-space:nowrap;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #f1f1f1;
+      color: #666;
+      font-size: 11px;
+      cursor: pointer;
+      white-space: nowrap;
     }
 
     .input-area {
       display: flex;
+      border-top: 1px solid #eaeaea;
       background: #ffffff;
     }
 
     .input-area input {
       flex: 1;
-      padding: 10px;
       border: none;
+      padding: 12px;
       font-size: 13px;
       outline: none;
     }
@@ -167,26 +159,26 @@
       border: none;
       background: #d76da4;
       color: #fff;
-      font-size: 13px;
       cursor: pointer;
+      font-size: 13px;
     }
 
-    .typing {
+    .product-link {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 5px 10px;
+      border-radius: 8px;
+      background: #ffffff;
+      border: 1px solid #d9bfd0;
       font-size: 11px;
-      color:#8e6781;
-      margin-left:4px;
+      text-decoration: none;
+      color: #b75d8d;
     }
 
-    .pill-link {
-      display:inline-block;
-      margin-top:6px;
-      padding:4px 8px;
-      border-radius:999px;
-      background:#ffffff;
-      border:1px solid #e5bdd8;
-      font-size:11px;
-      text-decoration:none;
-      color:#b0598d;
+    .helper-text {
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 6px;
     }
   </style>
 </head>
@@ -196,333 +188,357 @@
 
 <div class="chat-popup" id="chat-popup">
   <div class="chat-header">
-    <div class="chat-header-left">
-      <span class="chat-header-title">추억의 향수 챗봇</span>
-      <span class="chat-header-sub">당신의 그때 그 순간을 향으로 찾아드릴게요</span>
+    <div>
+      <div class="chat-header-title">추억의 향수 챗봇</div>
+      <div class="chat-header-sub">그때 그 순간을 향으로 불러올게요</div>
     </div>
     <button class="chat-header-close" id="chat-close">×</button>
   </div>
 
-  <div id="chat-window" class="chat-window">
+  <div class="chat-window" id="chat-window">
     <div class="helper-text">
-      예: "비 오는 날 흙냄새", "4월 첫사랑 느낌", "엄마의 부엌 같은 향", "브랜드 소개해줘"
+      예: "비 오는 날 흙냄새", "4월 첫사랑", "엄마의 부엌 같은 향", "브랜드 소개", "장마의 기억 설명해줘"
     </div>
   </div>
 
   <div class="quick-menu">
     <button class="quick-chip" data-text="브랜드 소개해줘">브랜드 소개</button>
-    <button class="quick-chip" data-text="따뜻하고 집 같은 향 추천해줘">따뜻한 집 향</button>
-    <button class="quick-chip" data-text="벚꽃 같은 첫사랑 향 추천해줘">첫사랑/벚꽃</button>
-    <button class="quick-chip" data-text="비 오는 날 흙냄새 나는 향 추천해줘">비 오는 날</button>
-    <button class="quick-chip" data-text="소풍 가는 날 느낌 향 추천해줘">소풍/여행</button>
-    <button class="quick-chip" data-text="운동장 흙냄새 나는 향 추천해줘">운동장</button>
-    <button class="quick-chip" data-text="구멍가게 사탕 느낌 향 추천해줘">구멍가게 사탕</button>
-    <button class="quick-chip" data-text="향수 리스트 보여줘">향수 목록</button>
+    <button class="quick-chip" data-text="향수 리스트 보여줘">향수 리스트</button>
+    <button class="quick-chip" data-text="비 오는 날 같은 향 추천해줘">비 오는 날</button>
+    <button class="quick-chip" data-text="벚꽃 같은 첫사랑 향 추천해줘">4월의 첫사랑</button>
+    <button class="quick-chip" data-text="엄마의 부엌 같은 향 추천해줘">엄마의 부엌</button>
+    <button class="quick-chip" data-text="학교 교실 같은 향 추천해줘">교실 느낌</button>
+    <button class="quick-chip" data-text="운동장 흙냄새 나는 향 추천해줘">운동장/흙냄새</button>
+    <button class="quick-chip" data-text="구멍가게 사탕 같은 향 추천해줘">구멍가게 사탕</button>
   </div>
 
   <div class="input-area">
-    <input id="user-input" placeholder="원하는 향 느낌이나 추억을 적어주세요" />
+    <input id="user-input" placeholder="떠올리고 싶은 장면이나 감정을 적어주세요" />
     <button id="send-btn">전송</button>
   </div>
 </div>
 
 <script>
-  // ==========================
-  // 1. 향수 데이터 (12종)
-  // ==========================
-  // ⚠️ 나중에 실제 상품 링크를 넣고 싶으면
-  //    아래 각 객체의 link: "" 부분에
-  //    카페24 상품 URL을 채워 넣으면 됨.
+  // --- 향수 데이터 12종 ---
   const perfumes = [
     {
       id: 1,
-      code: "NP01",
-      name: "Seize Heures en Classe",
-      krName: "오후 4시의 교실",
-      storyShort: "분필 가루가 햇살에 반짝이던 고요한 오후 4시, 친구들과 나눠 먹던 우유와 나무 책상 냄새가 섞인 포근한 교실의 공기.",
-      notes: ["화이트 머스크", "우디", "바닐라"],
-      moodKeywords: ["교실","분필","햇살","우유","나무책상","포근","따뜻","순수","친구","수다"],
-      tags: ["따뜻함","학교","포근한일상"],
-      link: "" // 예: "https://yourshop.com/product/np01"
+      name: "오후 4시의 교실",
+      frName: "Seize Heures en Classe",
+      reference: "킬리안 스트레이트 투 헤븐 마지막",
+      story: "종이 울리고 난 뒤의 고요함. 분필 가루가 햇살에 반짝이던 그 순간. 창문 너머로 들어오던 아카시아 향과 낡은 책상의 나무 냄새, 그리고 친구들과 나눠 먹던 우유의 달콤함을 담은 향입니다.",
+      notes: ["화이트 머스크", "우디", "바닐라", "아카시아"],
+      mood: ["따뜻함", "햇살", "분필", "노을", "교실", "학교", "포근함", "우유", "편안"],
+      memory: ["학창시절", "오후 4시", "수업 끝", "친구들과 수다", "창가 햇살"],
+      keywords: ["교실","칠판","분필","햇살","노을","따뜻","포근","우디","바닐라","화이트머스크","아카시아","학교","수업끝"],
+      link: "" // 나중에 카페24 상품 링크 넣으면 됨
     },
     {
       id: 2,
-      code: "NP02",
-      name: "Lettre en Origami",
-      krName: "색종이 편지",
-      storyShort: "손때 묻은 색종이를 접으며 전하던 비밀 메시지, 바스락거리는 종이와 잉크 냄새가 남아 있는 설렘의 순간.",
-      notes: ["페이퍼","아이리스","시트러스"],
-      moodKeywords: ["색종이","편지","바스락","잉크","비밀","우정","설렘"],
-      tags: ["첫사랑","우정","종이향"],
+      name: "색종이 편지",
+      frName: "Lettre en Origami",
+      reference: "르 메사제",
+      story: "손때 묻은 색종이를 접으며 전하던 비밀 메시지들. 종이의 바스락거림과 잉크의 달콤쌉싸름한 냄새가 담긴 향입니다.",
+      notes: ["페이퍼", "아이리스", "시트러스"],
+      mood: ["설렘", "종이", "편지", "첫사랑", "달콤쌉싸름", "잉크"],
+      memory: ["몰래 적던 쪽지", "친구와 우정", "색종이 접기"],
+      keywords: ["색종이","편지","쪽지","바스락","종이냄새","잉크","우정","첫사랑","아이리스","시트러스"],
       link: ""
     },
     {
       id: 3,
-      code: "NP03",
-      name: "Cave Secrète",
-      krName: "골목길 끝 지하실",
-      storyShort: "동네 골목 끝, 친구들과 숨겨둔 비밀 아지트. 습기 어린 공기와 콘크리트, 먼지 쌓인 만화책 냄새.",
-      notes: ["머스키 흙내음","콘크리트","모스"],
-      moodKeywords: ["지하실","아지트","골목길","비밀","습기","어둑함"],
-      tags: ["비밀","레트로","흙내"],
+      name: "골목길 끝 지하실",
+      frName: "Cave Secrète",
+      reference: "에따 헤르만",
+      story: "동네 골목길 구석의 비밀 아지트. 습기 어린 공기와 오래된 콘크리트, 먼지 쌓인 보물 같은 만화책들. 어둑한 공간에서만 나눌 수 있었던 아이들만의 비밀스러운 시간을 담은 향입니다.",
+      notes: ["머스키한 흙내음", "콘크리트", "모스"],
+      mood: ["비밀스러움", "습기", "차가움", "지하실", "콘크리트"],
+      memory: ["아지트", "어둑한 공간", "숨겨둔 장난감"],
+      keywords: ["지하실","아지트","비밀","머스크","모스","흙냄새","콘크리트","습한","골목길"],
       link: ""
     },
     {
       id: 4,
-      code: "NP04",
-      name: "Tiroir de Grand-mère",
-      krName: "할머니의 서랍장",
-      storyShort: "오래된 장롱을 열 때마다 풍기던 한지와 나무 냄새, 할머니의 손때 묻은 편지와 한복이 떠오르는 향.",
-      notes: ["파피루스","삼나무","은은한 플로럴"],
-      moodKeywords: ["한지","장롱","편지","할머니","포근","고즈넉"],
-      tags: ["가족","따뜻함","종이향"],
+      name: "할머니의 서랍장",
+      frName: "Tiroir de Grand-mère",
+      reference: "딥티크 로 파피에",
+      story: "오래된 장롱을 열 때마다 풍기던 고즈넉한 한지 냄새. 명절 한복, 할머니의 손때 묻은 편지들. 시간이 만든 깊이 있는 종이 향과 따뜻한 나무 향이 어우러진 향입니다.",
+      notes: ["파피루스", "삼나무", "플로럴"],
+      mood: ["고즈넉함", "종이", "전통", "한복", "나무향"],
+      memory: ["할머니집", "서랍장", "편지뭉치"],
+      keywords: ["할머니","서랍장","한지","종이","파피루스","삼나무","플로럴","전통","명절","장롱"],
       link: ""
     },
     {
       id: 5,
-      code: "NP05",
-      name: "Cuisine de Maman",
-      krName: "엄마의 부엌",
-      storyShort: "현관문을 열면 풍기던 밥 냄새, 압력밥솥 김과 참기름 비빔밥의 고소함이 담긴 집밥의 기억.",
-      notes: ["토스티드 라이스","따뜻한 우디","참기름"],
-      moodKeywords: ["부엌","밥","밥솥","집밥","구수","엄마","편안"],
-      tags: ["집같은","따뜻함","밥향"],
+      name: "엄마의 부엌",
+      frName: "Cuisine de Maman",
+      reference: "딥티크 로 파피에",
+      story: "학교에서 돌아올 때마다 현관문을 열면 풍기던 구수한 냄새, 압력밥솥에서 김이 모락모락 피어오르고, 따뜻한 밥 한 공기에 참기름을 둘러 비벼주시던 엄마의 손길이 담긴 향입니다.",
+      notes: ["토스티드 라이스", "따뜻한 우디", "참기름"],
+      mood: ["따뜻함", "집밥", "편안", "고소함"],
+      memory: ["엄마의 밥", "현관 열자마자 나는 냄새", "집의 공기"],
+      keywords: ["집밥","밥냄새","압력밥솥","참기름","부엌","주방","따뜻","고소","엄마","밥"],
       link: ""
     },
     {
       id: 6,
-      code: "NP06",
-      name: "Bonbons du Coin",
-      krName: "구멍가게 사탕",
-      storyShort: "100원, 200원 동전을 쥐고 달려가던 골목 구멍가게. 유리병 속 알록달록한 사탕과 사과맛 막대사탕의 달콤함.",
-      notes: ["애플 블로썸","캔디","시트러스"],
-      moodKeywords: ["구멍가게","사탕","젤리","달콤","사과","100원","행복"],
-      tags: ["달콤함","어린시절","간식"],
+      name: "구멍가게 사탕",
+      frName: "Bonbons du Coin",
+      reference: "클린 애플 블로썸",
+      story: "100원, 200원 동전을 쥐고 달려가던 골목길 구멍가게. 유리병 속 알록달록한 사탕들과 쫀득한 젤리, 새콤달콤한 사과맛 막대사탕. 어린 시절 가장 달콤했던 행복의 맛이 담긴 향입니다.",
+      notes: ["애플 블로썸", "캔디", "시트러스"],
+      mood: ["달콤함", "즐거움", "톡톡 튀는 느낌"],
+      memory: ["100원 사탕", "골목길", "구멍가게"],
+      keywords: ["사탕","구멍가게","젤리","막대사탕","사과맛","애플","캔디","새콤달콤","간식","100원"],
       link: ""
     },
     {
       id: 7,
-      code: "NP07",
-      name: "Romance d'Avril",
-      krName: "4월의 첫사랑",
-      storyShort: "복도에서 스쳐 지나갈까 두근대던 심장, 벚꽃이 흩날리던 봄날의 순수한 첫사랑의 떨림.",
-      notes: ["체리 블로썸","화이트 플로럴","소프트 머스크"],
-      moodKeywords: ["봄","벚꽃","첫사랑","떨림","쪽지","설렘","청순"],
-      tags: ["첫사랑","플로럴","봄"],
+      name: "4월의 첫사랑",
+      frName: "Romance d'Avril",
+      reference: "",
+      story: "봄바람에 날리던 벚꽃잎처럼 설렜던 첫사랑. 복도에서 마주칠까 두근거리던 심장 소리, 몰래 전해받은 쪽지, 그리고 이름 석 자만 들어도 얼굴이 빨개지던 그 시절. 청순하고 풋풋한 봄꽃 향기가 담긴 향입니다.",
+      notes: ["체리 블로썸", "화이트 플로럴", "소프트 머스크"],
+      mood: ["설렘", "벚꽃", "두근거림", "봄바람"],
+      memory: ["복도에서 마주치던 순간", "쪽지", "첫사랑"],
+      keywords: ["벚꽃","첫사랑","체리블로썸","플로럴","머스크","봄","두근","연애시작","설렘"],
       link: ""
     },
     {
       id: 8,
-      code: "NP08",
-      name: "Jour de Pique-nique",
-      krName: "소풍 가는 날",
-      storyShort: "도시락을 들고 떠나던 봄 소풍, 버스 창문 밖 신록과 김밥, 산 정상에서 마시던 시원한 물까지 담은 향.",
-      notes: ["우드","프레시 에어"],
-      moodKeywords: ["소풍","도시락","버스","산","김밥","여행시작"],
-      tags: ["여행","야외","산뜻"],
+      name: "소풍 가는 날",
+      frName: "Jour de Pique-nique",
+      reference: "",
+      story: "도시락 싸들고 떠나던 봄 소풍. 버스 창문으로 보이던 신록의 산과 맑은 공기. 친구들과 나눠 먹던 김밥, 산 정상에서 마시던 시원한 물의 청량함. 자연 속에서 마음껏 뛰놀던 자유로움이 담긴 향입니다.",
+      notes: ["그린 티", "시더우드", "프레시 에어"],
+      mood: ["자유로움", "상쾌", "야외", "햇살"],
+      memory: ["김밥", "소풍버스", "신록의 산"],
+      keywords: ["소풍","소풍버스","김밥","봄산","신록","그린티","맑은공기","프레시","여행시작"],
       link: ""
     },
     {
       id: 9,
-      code: "NP09",
-      name: "Vacances d'Été",
-      krName: "여름 바캉스",
-      storyShort: "모래사장과 파도 소리, 선크림과 바다 내음이 섞인 여름 가족여행의 자유로움.",
-      notes: ["솔티 오션","코코넛","시트러스"],
-      moodKeywords: ["바다","해변","여름","모래사장","선크림","수박","자유"],
-      tags: ["바다","여름","휴가"],
+      name: "여름 바캉스",
+      frName: "Vacances d'Été",
+      reference: "",
+      story: "여름방학 바닷가로 떠나던 가족여행. 뜨거운 모래사장과 시원한 파도 소리, 수박과 아이스크림의 달콤함. 선크림 냄새와 바다 내음이 섞인 여름날의 자유로움이 담긴 향입니다.",
+      notes: ["솔티 오션", "코코넛", "시트러스"],
+      mood: ["자유", "청량", "여름", "시원함"],
+      memory: ["가족여행", "바닷가", "수박", "아이스크림"],
+      keywords: ["바다","해변","모래사장","선크림","파도","코코넛","여름휴가","바캉스","수박","아이스크림"],
       link: ""
     },
     {
       id: 10,
-      code: "NP10",
-      name: "Printemps au Stade",
-      krName: "운동장의 봄",
-      storyShort: "흙먼지 날리던 운동회, 계주와 응원 소리, 햇볕 아래 운동장의 에너지가 담긴 향.",
-      notes: ["그라스","어스","스포티 노트"],
-      moodKeywords: ["운동장","운동회","흙먼지","계주","응원","에너지"],
-      tags: ["운동","활기","흙내"],
+      name: "운동장의 봄",
+      frName: "Printemps au Stade",
+      reference: "",
+      story: "청팀, 백팀으로 나뉘어 뛰던 운동회. 봄볕 아래 흙먼지가 날리던 운동장, 땀 흘리며 달리던 계주, 그리고 응원석에서 나눠 먹던 간식들. 활기찬 함성과 풀 내음이 어우러진 향입니다.",
+      notes: ["그라스", "어스", "스포티 노트"],
+      mood: ["활기참", "스포티", "햇살", "자유로움"],
+      memory: ["운동회", "계주", "간식"],
+      keywords: ["운동장","운동회","체육대회","흙먼지","그라스","스포티","응원","달리기","풀냄새"],
       link: ""
     },
     {
       id: 11,
-      code: "NP11",
-      name: "Après-midi dans l'Herbe",
-      krName: "풀밭 위 오후",
-      storyShort: "학교 뒤뜰 풀밭에 누워 하늘을 보던 오후, 네잎클로버를 찾으며 보냈던 느긋한 방과 후.",
-      notes: ["그린 리프","클로버","프레시 허브"],
-      moodKeywords: ["풀밭","하늘","클로버","화관","방과후","여유"],
-      tags: ["자연","잔잔함","그린"],
+      name: "풀밭 위 오후",
+      frName: "Après-midi dans l'Herbe",
+      reference: "",
+      story: "학교 뒤뜰 풀밭에 드러누워 하늘을 보던 오후. 풀잎을 씹으면 나던 풋풋한 맛, 애기똥풀의 노란 즙, 클로버 꽃을 엮어 만든 화관. 자연이 주던 소박한 행복이 담긴 향입니다.",
+      notes: ["그린 리프", "클로버", "프레시 허브"],
+      mood: ["자연", "편안", "초록", "풀향"],
+      memory: ["네잎클로버", "뒹굴기", "하늘보기"],
+      keywords: ["풀밭","잔디","클로버","허브","그린","자연","방과후","하늘보기","여유"],
       link: ""
     },
     {
       id: 12,
-      code: "NP12",
-      name: "Mémoire de Mousson",
-      krName: "장마의 기억",
-      storyShort: "창문을 두드리던 빗소리, 비 그친 뒤 피어오르던 흙내음과 젖은 아스팔트 냄새가 담긴 장마의 기억.",
-      notes: ["페트리코르","오존","아쿠아틱"],
-      moodKeywords: ["장마","비오는날","빗소리","흙내","젖은아스팔트","촉촉","고요"],
-      tags: ["비오는날","촉촉함","흙내"],
+      name: "장마의 기억",
+      frName: "Mémoire de Mousson",
+      reference: "",
+      story: "장마철 축축한 공기와 빗방울이 창문을 두드리던 소리. 비 그친 뒤 피어오르던 흙내음, 젖은 아스팔트와 풀 냄새. 우산 없이 비를 맞으며 뛰어다니던 철없던 시절의 자유로움이 담긴 향입니다.",
+      notes: ["페트리코르", "오존", "아쿠아틱"],
+      mood: ["촉촉함", "고요함", "비", "차분"],
+      memory: ["빗소리", "장마", "젖은 흙", "우산 없이 뛰기"],
+      keywords: ["비","장마","빗소리","우산","소나기","흙내음","젖은아스팔트","촉촉","아쿠아틱","페트리코르"],
       link: ""
     }
   ];
 
-  // 감성/키워드 유사어
-  const synonymGroups = {
-    "따뜻": ["따뜻","포근","집같은","아늑","따사로운"],
-    "첫사랑": ["첫사랑","설렘","두근","벚꽃","벚꽃향","연애시작"],
-    "비": ["비오는날","장마","비","촉촉","흙냄새","빗소리"],
-    "소풍": ["소풍","피크닉","여행시작","산행","도시락"],
-    "운동장": ["운동장","운동회","체육대회","트랙","계주","응원"],
-    "사탕": ["사탕","젤리","캔디","달콤","초콜릿"],
-    "집": ["집","집밥","부엌","엄마","주방"],
-    "바다": ["바다","해변","바캉스","여름휴가","모래사장","파도","서핑"]
-  };
+  // 감정/상황 클러스터
+  const emotionClusters = [
+    { name: "따뜻함", words: ["따뜻","포근","아늑","집같","편안"], targetIds: [1,4,5] },
+    { name: "첫사랑", words: ["첫사랑","설렘","두근","심장","연애"], targetIds: [2,7] },
+    { name: "비오는날", words: ["비","장마","소나기","빗소리","촉촉","우산"], targetIds: [3,12] },
+    { name: "바다", words: ["바다","해변","파도","서핑","물놀이","바캉스","휴가"], targetIds: [9] },
+    { name: "학교", words: ["학교","교실","칠판","분필","수업","종치"], targetIds: [1,2,10,11] },
+    { name: "집밥", words: ["집밥","밥","부엌","주방","엄마","현관문"], targetIds: [5] },
+    { name: "소풍", words: ["소풍","소풍버스","피크닉","도시락","김밥","여행시작"], targetIds: [8] },
+    { name: "운동장", words: ["운동장","운동회","체육대회","계주","트랙","응원"], targetIds: [10] },
+    { name: "사탕", words: ["사탕","캔디","젤리","막대사탕","달달","달콤"], targetIds: [6] },
+    { name: "풀밭", words: ["풀밭","잔디","클로버","초록","네잎클로버"], targetIds: [11] }
+  ];
 
-  function cleanText(t) {
-    return t.replace(/\s+/g,"").toLowerCase();
+  function norm(str) {
+    return str.replace(/\s+/g, "").toLowerCase();
   }
 
-  function matchGroup(text, key) {
-    const group = synonymGroups[key];
-    if (!group) return false;
-    return group.some(w => text.includes(w));
-  }
+  function findPerfumeByText(text) {
+    const t = text.toLowerCase();
+    const noSpace = norm(text);
 
-  function findPerfumeByNameOrId(text) {
-    const plain = text.replace(/\s+/g,"").toLowerCase();
-
-    // 번호 찾기
-    const numMatch = text.match(/(\d+)\s*번/);
+    const numMatch = t.match(/(\d+)\s*번/);
     if (numMatch) {
-      const n = parseInt(numMatch[1], 10);
-      return perfumes.find(p => p.id === n);
+      const id = parseInt(numMatch[1], 10);
+      const found = perfumes.find(p => p.id === id);
+      if (found) return found;
     }
 
-    // 이름 or 한글이름 일부로 찾기
-    return perfumes.find(p =>
-      plain.includes(p.name.replace(/\s+/g,"").toLowerCase()) ||
-      plain.includes(p.krName.replace(/\s+/g,"").toLowerCase())
-    );
+    for (const p of perfumes) {
+      if (
+        t.includes(p.name.toLowerCase()) ||
+        t.includes(p.frName.toLowerCase()) ||
+        noSpace.includes(norm(p.name)) ||
+        noSpace.includes(norm(p.frName))
+      ) {
+        return p;
+      }
+    }
+    return null;
   }
 
-  // ==========================
-  // 2. 알고리즘 – 점수 계산
-  // ==========================
   function scorePerfumes(userText) {
-    const text = cleanText(userText);
+    const t = userText.toLowerCase();
+    const tNorm = norm(userText);
 
     return perfumes.map(p => {
       let score = 0;
 
-      // 감성 키워드 직접매칭
-      p.moodKeywords.forEach(k => {
-        const ck = cleanText(k);
-        if (text.includes(ck)) score += 6;
+      // 키워드, mood, memory, notes 직접 매칭
+      p.keywords.forEach(k => {
+        if (tNorm.includes(norm(k))) score += 9;
       });
-
-      // 태그 기반 감성 매칭
-      p.tags.forEach(tag => {
-        const ct = cleanText(tag);
-        if (text.includes(ct)) score += 4;
+      p.mood.forEach(m => {
+        if (t.includes(m)) score += 6;
       });
-
-      // 향 노트 관련 단어 매칭
+      p.memory.forEach(m => {
+        if (t.includes(m)) score += 5;
+      });
       p.notes.forEach(n => {
-        const cn = cleanText(n);
-        if (text.includes(cn)) score += 3;
+        if (t.includes(n.toLowerCase())) score += 4;
       });
 
-      // 유사어 그룹 매칭
-      if (matchGroup(text,"따뜻") && p.tags.includes("따뜻함")) score += 5;
-      if (matchGroup(text,"첫사랑") && p.tags.includes("첫사랑")) score += 5;
-      if (matchGroup(text,"비") && p.tags.includes("비오는날")) score += 5;
-      if (matchGroup(text,"소풍") && p.tags.includes("여행")) score += 5;
-      if (matchGroup(text,"운동장") && p.tags.includes("운동")) score += 5;
-      if (matchGroup(text,"사탕") && p.tags.includes("달콤함")) score += 5;
-      if (matchGroup(text,"집") && p.tags.includes("집같은")) score += 5;
-      if (matchGroup(text,"바다") && p.tags.includes("바다")) score += 5;
+      // 감정/상황 클러스터 매칭
+      emotionClusters.forEach(cluster => {
+        const hit = cluster.words.some(w => t.includes(w));
+        if (hit && cluster.targetIds.includes(p.id)) {
+          score += 7;
+        }
+      });
 
-      // 분위기 키워드 대략적 가중치
-      if (/포근|집같|엄마|할머니/.test(userText)) {
-        if (["NP04","NP05"].includes(p.code)) score += 4;
+      // 톤이 잔잔/차분/고요 → 장마/풀밭 계열 가중
+      if (/잔잔|차분|고요|조용|은은/.test(t)) {
+        if ([11, 12, 1].includes(p.id)) score += 3;
       }
-      if (/학교|교실|수업|종치/.test(userText)) {
-        if (["NP01","NP02","NP11","NP10"].includes(p.code)) score += 3;
+      // 활기/에너지 → 운동장/바캉스/소풍
+      if (/활기|에너지|신남|신나는|뛰어/.test(t)) {
+        if ([8, 9, 10, 6].includes(p.id)) score += 3;
       }
-      if (/여름|바캉스|휴가|해변|바다/.test(userText)) {
-        if (["NP09"].includes(p.code)) score += 4;
+
+      // 완전 애매한 입력일 때도 어느 정도 랜덤 가중치
+      if (score === 0) {
+        score += Math.floor(Math.random() * 5); // 0~4
       }
 
       return { ...p, score };
-    }).sort((a,b) => b.score - a.score);
+    }).sort((a, b) => b.score - a.score);
   }
 
-  // ==========================
-  // 3. 브랜드 / 설명 / 비교 등 Intent 처리
-  // ==========================
-  function getBrandIntroHtml() {
+  function buildBrandIntroHtml() {
     return `
 <b>추억의 향수는 어떤 브랜드인가요?</b><br><br>
-우리는 단순히 좋은 향을 파는 브랜드가 아니라, <b>"시간의 아카이브"</b>를 만드는 향수 레이블이에요.<br><br>
-1990–2010년대 한국에서 누구나 공감할 수 있는 순간들,<br>
-색종이 편지, 구멍가게 사탕, 장마 끝 흙내, 소풍 가는 날의 설렘 같은 기억들을 향으로 기록하고 있어요.<br><br>
-우리 슬로건은<br>
-<b>"당신의 그때 그 순간을 담은 향"</b><br>
-당신의 이야기를 향기로 꺼내고 싶다면, 그때의 분위기나 장면을 편하게 말해줘요. ✨
+우리는 단순히 좋은 냄새를 파는 브랜드가 아니라,<br>
+<b>"당신의 기억을 향으로 기록하는 작은 아카이브"</b>를 만드는 브랜드예요.<br><br>
+학창시절 교실, 구멍가게 사탕, 엄마의 부엌, 장마 끝 흙냄새처럼<br>
+잊고 살던 장면들을 다시 꺼내볼 수 있도록,<br>
+각 향수마다 하나의 <b>한국식 추억</b>을 담아두었어요.<br><br>
+원하는 순간이나 기분을 말해주면,<br>
+그 기억에 가장 잘 어울리는 향을 골라줄게요. ✨
 `;
   }
 
-  function getPerfumeListHtml() {
-    const lines = perfumes.map(p => `${p.id}. ${p.krName} (${p.name})`);
-    return `<b>현재 컬렉션 12종 리스트에요.</b><br><br>${lines.join("<br>")}<br><br>궁금한 향이 있다면<br>"3번 설명해줘" 또는 "장마의 기억 설명해줘" 처럼 물어봐도 좋아요.`;
+  function buildListHtml() {
+    const lines = perfumes.map(p => `${p.id}. ${p.name} (${p.frName})`);
+    return `<b>현재 컬렉션 12종이에요.</b><br><br>${lines.join("<br>")}<br><br>궁금한 향이 있다면<br>"3번 설명해줘" 또는 "장마의 기억 설명해줘"처럼 물어봐도 좋아요.`;
   }
 
-  function describePerfumeHtml(p) {
-    if (!p) return "어느 향을 말하는지 잘 모르겠어요. 번호(예: 3번)나 이름을 조금 더 정확히 말해줄래요?";
-    let html = `<b>${p.krName} (${p.name})</b><br><br>${p.storyShort}<br><br><b>향의 구성</b><br>${p.notes.join(", ")}`;
+  function buildDescribeHtml(p) {
+    if (!p) {
+      return "어느 향을 말하는지 잘 모르겠어요. 번호(예: 3번)나 이름을 조금 더 정확히 말해줄래요?";
+    }
+    let html = `<b>${p.name}</b> (${p.frName})<br><br>${p.story}<br><br><b>향의 구성</b><br>${p.notes.join(", ")}`;
+    if (p.reference) {
+      html += `<br><br><b>참고향</b><br>${p.reference}`;
+    }
     if (p.link) {
-      html += `<br><a class="pill-link" href="${p.link}" target="_blank">상품 보러가기</a>`;
-    } else {
-      // 링크는 나중에 시호가 넣을 예정이라 여기선 생략
+      html += `<br><a class="product-link" href="${p.link}" target="_blank">상품 보러가기</a>`;
     }
     return html;
   }
 
-  function comparePerfumesHtml(p1, p2) {
+  function buildCompareHtml(p1, p2) {
     if (!p1 || !p2) {
-      return "비교할 두 향수를 정확히 알려줘. 예: \"오후 4시의 교실이랑 장마의 기억 차이 알려줘\" 혹은 \"1번이랑 12번 비교해줘\"";
+      return "비교할 두 향수를 조금 더 정확히 알려줘! 예: \"1번이랑 12번 비교해줘\" 또는 \"오후 4시의 교실이랑 장마의 기억 차이 알려줘\"";
     }
-
     return `
-<b>${p1.krName} vs ${p2.krName}</b><br><br>
-• <b>${p1.krName}</b> – ${p1.storyShort}<br>
+<b>${p1.name} vs ${p2.name}</b><br><br>
+• <b>${p1.name}</b><br>${p1.story}<br>
 향의 구성: ${p1.notes.join(", ")}<br><br>
-• <b>${p2.krName}</b> – ${p2.storyShort}<br>
+• <b>${p2.name}</b><br>${p2.story}<br>
 향의 구성: ${p2.notes.join(", ")}<br><br>
 느낌으로 정리하면,<br>
-<b>${p1.krName}</b>는 ${p1.tags.join(", ")} 쪽에 더 가깝고,<br>
-<b>${p2.krName}</b>는 ${p2.tags.join(", ")} 무드가 더 강해요. 지금 기분에 더 끌리는 쪽을 선택해보는 걸 추천할게요. 🌿
+<b>${p1.name}</b>는 ${p1.mood.join(", ")} 쪽에 가깝고,<br>
+<b>${p2.name}</b>는 ${p2.mood.join(", ")} 무드가 더 강해요.<br>
+지금 기분에 더 가까운 쪽을 골라보는 걸 추천할게요. 🌿
 `;
   }
 
-  function detectIntent(text) {
-    const t = text.trim();
+  function buildRecommendHtml(userText) {
+    const ranked = scorePerfumes(userText);
+    const best = ranked[0];
+    const second = ranked[1];
 
-    // 브랜드 소개
-    if (/브랜드\s*소개|브랜드\s*스토리|추억의\s*향수\s*뭐|무슨\s*브랜드/.test(t)) {
-      return { type: "brandIntro" };
+    let html = `<b>이런 향이 잘 어울릴 것 같아요.</b><br><br>`;
+    html += `<b>${best.name}</b> (${best.frName})<br>${best.story}<br><br>`;
+    html += `<b>향의 구성</b><br>${best.notes.join(", ")}`;
+
+    if (best.link) {
+      html += `<br><a class="product-link" href="${best.link}" target="_blank">상품 보러가기</a>`;
     }
 
-    // 리스트
-    if (/향수\s*목록|향수\s*리스트|전체\s*향수/.test(t)) {
+    if (second && second.score > 0) {
+      html += `<br><br><b>다른 후보</b><br>${second.name} (${second.frName})도 지금 말한 분위기와 잘 어울려요.`;
+    }
+
+    html += `<br><br>다른 느낌이 궁금하면,<br>"조금 더 상큼한 향", "좀 더 잔잔한 향" 처럼 다시 말해줘도 좋아요.`;
+
+    return html;
+  }
+
+  function detectIntent(text) {
+    const t = text.toLowerCase();
+
+    if (/브랜드\s*소개|브랜드\s*스토리|추억의\s*향수\s*뭐|무슨\s*브랜드/.test(t)) {
+      return { type: "brand" };
+    }
+
+    if (/향수\s*(리스트|목록)|전체\s*향수|라인업/.test(t)) {
       return { type: "list" };
     }
 
-    // 비교
     if (/비교|차이/.test(t)) {
-      // 두 개 향 뽑기 (번호 또는 이름)
       const nums = t.match(/(\d+)\s*번/g);
       let p1 = null, p2 = null;
       if (nums && nums.length >= 2) {
@@ -533,50 +549,32 @@
       } else {
         const parts = t.split(/랑|과|와|vs|,|\/|\&/);
         if (parts.length >= 2) {
-          p1 = findPerfumeByNameOrId(parts[0]);
-          p2 = findPerfumeByNameOrId(parts[1]);
+          p1 = findPerfumeByText(parts[0]);
+          p2 = findPerfumeByText(parts[1]);
         }
       }
       return { type: "compare", p1, p2 };
     }
 
-    // 특정 향 설명
-    if (/설명|어떤\s*향|무슨\s*향/.test(t)) {
-      const target = findPerfumeByNameOrId(t);
+    if (/설명|어떤\s*향|자세히/.test(t)) {
+      const target = findPerfumeByText(t);
       return { type: "describe", perfume: target };
     }
 
     return { type: "recommend" };
   }
 
-  function buildRecommendationHtml(userText) {
-    const ranked = scorePerfumes(userText);
-    const best = ranked[0];
-    if (!best || best.score === 0) {
-      return `조금만 더 구체적으로 말해줘!<br>예: "비 오는 날 흙냄새", "4월 첫사랑 느낌", "엄마의 부엌 같은 포근한 향" 처럼 장면이나 기분을 알려주면 좋아.`;
-    }
-    const second = ranked[1];
+  function getBotReplyHtml(text) {
+    const intent = detectIntent(text);
 
-    let html = `<b>이런 향이 잘 어울릴 것 같아요.</b><br><br>`;
-    html += `<b>1순위 · ${best.krName} (${best.name})</b><br>${best.storyShort}<br>`;
-    html += `<br><b>향의 구성</b><br>${best.notes.join(", ")}`;
-
-    if (best.link) {
-      html += `<br><a class="pill-link" href="${best.link}" target="_blank">상품 보러가기</a>`;
-    }
-
-    if (second && second.score > 0) {
-      html += `<br><br><b>2순위로는</b> ${second.krName} (${second.name}) 도 분위기가 비슷해요.<br>`;
-    }
-
-    html += `<br><br>다른 느낌이 궁금하면, "좀 더 상큼한 걸로", "조금 더 잔잔한 향 없을까?" 처럼 다시 말해줘.`;
-
-    return html;
+    if (intent.type === "brand")   return buildBrandIntroHtml();
+    if (intent.type === "list")    return buildListHtml();
+    if (intent.type === "describe")return buildDescribeHtml(intent.perfume);
+    if (intent.type === "compare") return buildCompareHtml(intent.p1, intent.p2);
+    return buildRecommendHtml(text);
   }
 
-  // ==========================
-  // 4. UI / 메시지 처리
-  // ==========================
+  // --- UI 동작 부분 ---
   const popup = document.getElementById("chat-popup");
   const launcher = document.getElementById("chat-launcher");
   const closeBtn = document.getElementById("chat-close");
@@ -584,8 +582,6 @@
   const input = document.getElementById("user-input");
   const sendBtn = document.getElementById("send-btn");
   const quickButtons = document.querySelectorAll(".quick-chip");
-
-  let typingEl = null;
 
   function openChat() {
     popup.style.display = "flex";
@@ -596,78 +592,36 @@
   }
 
   launcher.onclick = () => {
-    const isOpen = popup.style.display === "flex";
-    if (isOpen) closeChat(); else openChat();
+    if (popup.style.display === "flex") closeChat();
+    else openChat();
   };
-  closeBtn.onclick = () => closeChat();
+  closeBtn.onclick = closeChat;
 
   function addMsg(text, who, isHtml=false) {
     const row = document.createElement("div");
-    row.classList.add("msg-row", who);
-
+    row.className = `msg-row ${who}`;
     const bubble = document.createElement("div");
-    bubble.classList.add("msg-bubble", who);
+    bubble.className = `msg-bubble ${who}`;
 
-    if (isHtml) {
-      bubble.innerHTML = text;
-    } else {
-      bubble.textContent = text;
-    }
+    if (isHtml) bubble.innerHTML = text;
+    else bubble.textContent = text;
 
     row.appendChild(bubble);
     chat.appendChild(row);
     chat.scrollTop = chat.scrollHeight;
   }
 
-  function showTyping() {
-    if (typingEl) return;
-    typingEl = document.createElement("div");
-    typingEl.classList.add("typing");
-    typingEl.textContent = "챗봇이 향을 고르는 중이에요...";
-    chat.appendChild(typingEl);
-    chat.scrollTop = chat.scrollHeight;
-  }
-
-  function hideTyping() {
-    if (typingEl) {
-      typingEl.remove();
-      typingEl = null;
-    }
-  }
-
-  function getBotHtml(text) {
-    const intent = detectIntent(text);
-
-    if (intent.type === "brandIntro") {
-      return getBrandIntroHtml();
-    }
-    if (intent.type === "list") {
-      return getPerfumeListHtml();
-    }
-    if (intent.type === "describe") {
-      return describePerfumeHtml(intent.perfume);
-    }
-    if (intent.type === "compare") {
-      return comparePerfumesHtml(intent.p1, intent.p2);
-    }
-    // 기본: 추천
-    return buildRecommendationHtml(text);
-  }
-
   function handleSend(rawText) {
     const text = rawText.trim();
     if (!text) return;
 
-    addMsg(text, "user", false);
+    addMsg(text, "user");
     input.value = "";
 
-    showTyping();
-
     setTimeout(() => {
-      hideTyping();
-      const replyHtml = getBotHtml(text);
+      const replyHtml = getBotReplyHtml(text);
       addMsg(replyHtml, "bot", true);
-    }, 400);
+    }, 350);
   }
 
   sendBtn.onclick = () => handleSend(input.value);
@@ -682,12 +636,7 @@
     });
   });
 
-  // 첫 안내 메시지
-  addMsg(
-    "안녕, 추억의 향수 챗봇이에요.\n떠올리고 싶은 순간이나 장면을 말해주면, 그 기억에 어울리는 향을 골라줄게요.",
-    "bot",
-    false
-  );
+  addMsg("안녕, 추억의 향수 챗봇이에요.\n떠올리고 싶은 순간이나 기분을 편하게 말해보세요.", "bot");
 </script>
 
 </body>
